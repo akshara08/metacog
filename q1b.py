@@ -11,6 +11,7 @@ markers = ["o", "^", "x", "+", "p" ]
 freqs = defaultdict(dict)
 means_freq, errors_freq = {}, {}
 
+#run the trials num_samples times
 for i in tqdm(range(num_samples)):
     g = Gamble()
     g.begin_trails(a=0., b=1.)
@@ -18,7 +19,7 @@ for i in tqdm(range(num_samples)):
         freqs[key][i] = g.freqs[key]
 
 
-
+#extract the data
 for key in sorted(freqs):
     dist_freq, dist_perf = [], []
     for ix in range(num_samples):
@@ -27,6 +28,7 @@ for key in sorted(freqs):
     means_freq[key] = np.mean(dist_freq, axis=0)
     errors_freq[key] = np.std(dist_freq, axis=0, ddof=1)
 
+#club 0 to 0.6 into one
 clubbed_means, clubbed_stds = {}, {}
 means, errs = [], []
 for key in [0, 1, 2, 3, 4, 5]:
@@ -40,6 +42,7 @@ clubbed_means[1] = means_freq[9]
 clubbed_stds[0] = np.mean(errs, axis=0)
 clubbed_stds[1] = errors_freq[9]
 
+#during training learning
 labels = ['<=0.6', '0.9-1']
 for ix in [0, 1]:
     plt.plot(x, clubbed_means[ix], marker=markers[ix], label=labels[ix], color=colors[ix])
@@ -51,6 +54,7 @@ plt.ylabel("Ratio of choosing LEX over EQW")
 plt.show()
 print()
 
+#Post training results
 for i in tqdm(range(num_samples)):
     g = Gamble()
     g.begin_trails(a=0., b=1.)

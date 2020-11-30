@@ -85,6 +85,7 @@ class Gamble:
             self.x2, self.y2 = self.payoffs()
             action = self.choose_action(self.state_idx(self.p))
             self.take_action(action, self.state_idx(self.p))
+            #update metrics
             if ix%checkpoint == 0:
                 for state_ix in sorted(self.action_times):
                     self.freqs[state_ix].append((self.action_times[state_ix][0]+1)/(self.action_times[state_ix][1]+1))
@@ -92,11 +93,13 @@ class Gamble:
                     self.prop[state_ix].append((self.proportions[state_ix][1]) / (self.proportions[state_ix][1] + self.proportions[state_ix][0]))
                     self.proportions[state_ix][0] = 0.
                     self.proportions[state_ix][1] = 0.
+            #update params
             if ix%(checkpoint//2) == 0:
                 self.exp_rate = 1 - (ix/n)
                 self.lr = 1 - (ix/n)
 
     def post_training_trials(self, n=100, a=0.5, b=1):
+        #similar to begin_trials but without update
         self.exp_rate = 0.2
         self.freqs = defaultdict(list)
         for ix in range(1, n):

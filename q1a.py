@@ -11,6 +11,7 @@ freqs, perf = defaultdict(dict), defaultdict(dict)
 colors = ['b', 'g', 'r', 'c', 'm']
 markers = ["o", "^", "x", "+", "p" ]
 
+#run the trials num_samples times
 for i in tqdm(range(num_samples)):
     g = Gamble()
     g.begin_trails()
@@ -21,6 +22,7 @@ for i in tqdm(range(num_samples)):
 means_freq, errors_freq = {}, {}
 means_perf, errors_perf = {}, {}
 
+#extract the data
 for key in sorted(perf):
     dist_freq, dist_perf = [], []
     for ix in range(num_samples):
